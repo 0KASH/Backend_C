@@ -1,33 +1,29 @@
 import Student from "../models/Student.js";
 
-const getStudents = async (req, res) => {
+const getStudents = async (req, res, next) => {
   try {
     const students = await Student.find();
 
     res.status(200).json(students);
 
   } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+       next(error)
   }
 };
 
-const createStudent = async (req, res) => {
+const createStudent = async (req, res , next) => {
    try {
     const student = await Student.create(req.body);
 
     res.status(201).json(student);
 
     } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+       next(error);
   }
 
 };
 
-const getStudentById = async (req, res) => {
+const getStudentById = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -36,9 +32,7 @@ const getStudentById = async (req, res) => {
     res.status(200).json(student);
 
   } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+     next(error)
   }
 };
 
@@ -63,13 +57,11 @@ const updateStudent = async (req, res) => {
     res.status(200).json(updatedStudent);
 
   } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+    next(error)
   }
 };
 
-const deleteStudent = async (req, res) => {
+const deleteStudent = async (req, res, next) => {
   try {
     const { id } = req.params;
 
@@ -87,9 +79,7 @@ const deleteStudent = async (req, res) => {
     });
 
   } catch (error) {
-    res.status(500).json({
-      message: error.message
-    });
+    next(error)
   }
 };
 

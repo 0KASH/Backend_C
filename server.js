@@ -2,6 +2,7 @@ import express from "express";
 import dotenv from "dotenv";
 import connectDB from "./config/db.js";
 import studentRoutes from "./routes/studentRoutes.js";
+import errorHandler from "./middleware/errorHandler.js";
 
 
 dotenv.config();
@@ -9,6 +10,7 @@ dotenv.config();
 const app = express();
 app.use(express.json());
 app.use("/api/students", studentRoutes);
+app.use(errorHandler);
    connectDB();  
 
 const PORT = process.env.PORT;
