@@ -1,87 +1,71 @@
 import Student from "../models/Student.js";
+import asyncHandler from "../utils/asyncHandler.js";
 
-const getStudents = async (req, res, next) => {
-  try {
-    const students = await Student.find();
+const getStudents = asyncHandler(async (req, res) => {
 
-    res.status(200).json(students);
+  const students = await Student.find();
 
-  } catch (error) {
-       next(error)
-  }
-};
+  res.status(200).json(students);
 
-const createStudent = async (req, res , next) => {
-   try {
-    const student = await Student.create(req.body);
+});
 
-    res.status(201).json(student);
+const createStudent = asyncHandler(async (req, res) => {
 
-    } catch (error) {
-       next(error);
-  }
+  const student = await Student.create(req.body);
 
-};
+  res.status(201).json(student);
 
-const getStudentById = async (req, res, next) => {
-  try {
-    const { id } = req.params;
+});
 
-    const student = await Student.findById(id);
+const getStudentById = asyncHandler(async (req, res) => {
 
-    res.status(200).json(student);
+  const student = await Student.findById(req.params.id);
 
-  } catch (error) {
-     next(error)
-  }
-};
-
-const updateStudent = async (req, res) => {
-  try {
-    const { id } = req.params;
-
-    const updatedStudent = await Student.findByIdAndUpdate(
-      id,
-      req.body,
-      {
-          returnDocument: "after"
-      }
-    );
-
-    if (!updatedStudent) {
-      return res.status(404).json({
-        message: "Student not found"
-      });
-    }
-
-    res.status(200).json(updatedStudent);
-
-  } catch (error) {
-    next(error)
-  }
-};
-
-const deleteStudent = async (req, res, next) => {
-  try {
-    const { id } = req.params;
-
-    const deletedStudent = await Student.findByIdAndDelete(id);
-
-    if (!deletedStudent) {
-      return res.status(404).json({
-        message: "Student not found"
-      });
-    }
-
-    res.status(200).json({
-      message: "Student deleted successfully",
-      student: deletedStudent
+  if (!student) {
+    return res.status(404).json({
+      message: "Student not found"
     });
-
-  } catch (error) {
-    next(error)
   }
-};
+
+  res.status(200).json(student);
+
+});
+
+const updateStudent = asyncHandler(async (req, res) => {
+
+  const student = await Student.findByIdAndUpdate(
+    req.params.id,
+    req.body,
+    {
+      new: true
+    }
+  );
+
+  if (!student) {
+    return res.status(404).json({
+      message: "Student not found"
+    });
+  }
+
+  res.status(200).json(student);
+
+});
+
+const deleteStudent = asyncHandler(async (req, res) => {
+
+  const student = await Student.findByIdAndDelete(req.params.id);
+
+  if (!student) {
+    return res.status(404).json({
+      message: "Student not found"
+    });
+  }
+
+  res.status(200).json({
+    message: "Student deleted successfully"
+  });
+
+});
 
 export {
   getStudents,
