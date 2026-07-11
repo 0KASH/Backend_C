@@ -9,10 +9,11 @@ import {
 
 import studentValidation from "../middleware/studentValidation.js";
 import validate from "../middleware/validate.js";
+import authMiddleware from "../middleware/authMiddleware.js";
 
 const router = express.Router();
 
-router.get("/", getStudents);
+router.get("/",authMiddleware, getStudents);
 
 router.post("/", studentValidation, validate, createStudent);
 
