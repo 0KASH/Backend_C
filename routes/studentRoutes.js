@@ -7,15 +7,18 @@ import {
   deleteStudent
 } from "../controllers/studentController.js";
 
+import studentValidation from "../middleware/studentValidation.js";
+import validate from "../middleware/validate.js";
+
 const router = express.Router();
 
 router.get("/", getStudents);
 
-router.post("/", createStudent);
+router.post("/", studentValidation, validate, createStudent);
 
 router.get("/:id", getStudentById);
 
-router.put("/:id", updateStudent)
+router.put("/:id", studentValidation, validate, updateStudent);
 
 router.delete("/:id", deleteStudent);
 
